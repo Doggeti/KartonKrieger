@@ -8,6 +8,7 @@ namespace KartonKrieger
     public partial class Form1 : Form
     {
         static int BOARD_SIZE = 10;
+        // git
 
         Game Game = new Game();
 
