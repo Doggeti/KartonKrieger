@@ -30,38 +30,38 @@ namespace KartonKrieger
 
         public void LinkCells()
         {
-            for (int l = 0; l < Cells.GetLength(0); l++)
+            for (int x = 0; x < Cells.GetLength(0); x++)
             {
-                for (int w = 0; w < Cells.GetLength(1); w++)
+                for (int y = 0; y < Cells.GetLength(1); y++)
                 {
-                    BattlefieldCell current = Cells[l, w];
+                    BattlefieldCell current = Cells[x, y];
 
-                    if (l > 0)
+                    if (x > 0)
                     {
-                        BattlefieldCell north = Cells[l - 1, w];
-                        current.LinkAdjacentCell(north, CardinalDirection.North);
-                        north.LinkAdjacentCell(current, CardinalDirection.South);
-                    }
-
-                    if (l < Cells.GetLength(0) - 1)
-                    {
-                        BattlefieldCell south = Cells[l + 1, w];
-                        current.LinkAdjacentCell(south, CardinalDirection.South);
-                        south.LinkAdjacentCell(current, CardinalDirection.North);
-                    }
-
-                    if (w > 0)
-                    {
-                        BattlefieldCell west = Cells[l, w - 1];
+                        BattlefieldCell west = Cells[x - 1, y];
                         current.LinkAdjacentCell(west, CardinalDirection.West);
                         west.LinkAdjacentCell(current, CardinalDirection.East);
                     }
 
-                    if (w < Cells.GetLength(1) - 1)
+                    if (x < Cells.GetLength(0) - 1)
                     {
-                        BattlefieldCell east = Cells[l, w + 1];
+                        BattlefieldCell east = Cells[x + 1, y];
                         current.LinkAdjacentCell(east, CardinalDirection.East);
                         east.LinkAdjacentCell(current, CardinalDirection.West);
+                    }
+
+                    if (y > 0)
+                    {
+                        BattlefieldCell north = Cells[x, y - 1];
+                        current.LinkAdjacentCell(north, CardinalDirection.North);
+                        north.LinkAdjacentCell(current, CardinalDirection.South);
+                    }
+
+                    if (y < Cells.GetLength(1) - 1)
+                    {
+                        BattlefieldCell south = Cells[x, y + 1];
+                        current.LinkAdjacentCell(south, CardinalDirection.South);
+                        south.LinkAdjacentCell(current, CardinalDirection.North);
                     }
                 }
             }

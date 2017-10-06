@@ -7,6 +7,7 @@ namespace KartonKrieger
     {
         public int Level;
         public string Name;
+        public string Faction;
 
         public float Initiative;
         public float InitiativeGain;
@@ -18,6 +19,8 @@ namespace KartonKrieger
 
         List<CharacterProperty> Properties = new List<CharacterProperty>();
         public List<Equipment> Inventory = new List<Equipment>();
+
+        public Attack SelectedAttack;
 
         public void AddProperty<T>() where T : CharacterProperty, new()
         {
@@ -34,7 +37,7 @@ namespace KartonKrieger
             return Properties.OfType<T>().SingleOrDefault();
         }
 
-        public int GetPropertyValue<T>() where T : CharacterProperty
+        public float GetPropertyValue<T>() where T : CharacterProperty
         {
             CharacterProperty property = Properties.OfType<T>().SingleOrDefault();
             return property?.CurrentValue ?? 0;
@@ -46,10 +49,27 @@ namespace KartonKrieger
             property.CurrentValue = newValue;
         }
 
-        public int GetPropertyMax<T>() where T : CharacterProperty
+        public float GetPropertyMax<T>() where T : CharacterProperty
         {
             CharacterProperty property = Properties.OfType<T>().SingleOrDefault();
             return property?.GetMaxValueAtLevel(Level) ?? 0;
+        }
+
+        public bool Alive
+        {
+            get
+            {
+                var live = GetProperty<Live>();
+
+                if (live == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return live.CurrentValue > 0;
+                }
+            }
         }
     }
 }

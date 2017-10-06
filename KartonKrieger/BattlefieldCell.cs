@@ -8,7 +8,7 @@ namespace KartonKrieger
 
         public Character Character = null;
 
-        Dictionary<CardinalDirection, BattlefieldCell> AdjacentCells = new Dictionary<CardinalDirection, BattlefieldCell>();
+        public Dictionary<CardinalDirection, BattlefieldCell> AdjacentCells = new Dictionary<CardinalDirection, BattlefieldCell>();
 
         public void LinkAdjacentCell(BattlefieldCell cell, CardinalDirection direction)
         {

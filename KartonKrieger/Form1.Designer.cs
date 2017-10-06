@@ -39,6 +39,9 @@
             this.Attack1 = new System.Windows.Forms.Button();
             this.Attack2 = new System.Windows.Forms.Button();
             this.Attack3 = new System.Windows.Forms.Button();
+            this.Attack = new System.Windows.Forms.Button();
+            this.TurnRight = new System.Windows.Forms.Button();
+            this.TurnLeft = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ActiveCharacter
@@ -62,7 +65,8 @@
             // 
             // GoNorth
             // 
-            this.GoNorth.Location = new System.Drawing.Point(47, 351);
+            this.GoNorth.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GoNorth.Location = new System.Drawing.Point(50, 416);
             this.GoNorth.Name = "GoNorth";
             this.GoNorth.Size = new System.Drawing.Size(25, 25);
             this.GoNorth.TabIndex = 2;
@@ -72,7 +76,8 @@
             // 
             // GoWest
             // 
-            this.GoWest.Location = new System.Drawing.Point(16, 382);
+            this.GoWest.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GoWest.Location = new System.Drawing.Point(11, 447);
             this.GoWest.Name = "GoWest";
             this.GoWest.Size = new System.Drawing.Size(25, 25);
             this.GoWest.TabIndex = 3;
@@ -82,7 +87,8 @@
             // 
             // GoSouth
             // 
-            this.GoSouth.Location = new System.Drawing.Point(47, 413);
+            this.GoSouth.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GoSouth.Location = new System.Drawing.Point(50, 447);
             this.GoSouth.Name = "GoSouth";
             this.GoSouth.Size = new System.Drawing.Size(25, 25);
             this.GoSouth.TabIndex = 4;
@@ -92,7 +98,8 @@
             // 
             // GoEast
             // 
-            this.GoEast.Location = new System.Drawing.Point(77, 382);
+            this.GoEast.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GoEast.Location = new System.Drawing.Point(88, 447);
             this.GoEast.Name = "GoEast";
             this.GoEast.Size = new System.Drawing.Size(25, 25);
             this.GoEast.TabIndex = 5;
@@ -121,37 +128,76 @@
             // 
             this.Attack1.Location = new System.Drawing.Point(13, 125);
             this.Attack1.Name = "Attack1";
-            this.Attack1.Size = new System.Drawing.Size(90, 48);
+            this.Attack1.Size = new System.Drawing.Size(101, 48);
             this.Attack1.TabIndex = 8;
             this.Attack1.Text = "button1";
             this.Attack1.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.Attack1.UseVisualStyleBackColor = true;
+            this.Attack1.Click += new System.EventHandler(this.Attack1_Click);
             // 
             // Attack2
             // 
             this.Attack2.Location = new System.Drawing.Point(13, 179);
             this.Attack2.Name = "Attack2";
-            this.Attack2.Size = new System.Drawing.Size(90, 48);
+            this.Attack2.Size = new System.Drawing.Size(101, 48);
             this.Attack2.TabIndex = 9;
             this.Attack2.Text = "button1";
             this.Attack2.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.Attack2.UseVisualStyleBackColor = true;
+            this.Attack2.Click += new System.EventHandler(this.Attack2_Click);
             // 
             // Attack3
             // 
             this.Attack3.Location = new System.Drawing.Point(12, 233);
             this.Attack3.Name = "Attack3";
-            this.Attack3.Size = new System.Drawing.Size(90, 48);
+            this.Attack3.Size = new System.Drawing.Size(102, 48);
             this.Attack3.TabIndex = 10;
             this.Attack3.Text = "button1";
             this.Attack3.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.Attack3.UseVisualStyleBackColor = true;
+            this.Attack3.Click += new System.EventHandler(this.Attack3_Click);
+            // 
+            // Attack
+            // 
+            this.Attack.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Attack.Location = new System.Drawing.Point(11, 303);
+            this.Attack.Name = "Attack";
+            this.Attack.Size = new System.Drawing.Size(103, 48);
+            this.Attack.TabIndex = 11;
+            this.Attack.Text = "ATTACK !!!";
+            this.Attack.UseVisualStyleBackColor = true;
+            this.Attack.Click += new System.EventHandler(this.Attack_Click);
+            // 
+            // TurnRight
+            // 
+            this.TurnRight.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TurnRight.Location = new System.Drawing.Point(89, 416);
+            this.TurnRight.Name = "TurnRight";
+            this.TurnRight.Size = new System.Drawing.Size(25, 25);
+            this.TurnRight.TabIndex = 12;
+            this.TurnRight.Text = "↷";
+            this.TurnRight.UseVisualStyleBackColor = true;
+            this.TurnRight.Click += new System.EventHandler(this.TurnRight_Click);
+            // 
+            // TurnLeft
+            // 
+            this.TurnLeft.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TurnLeft.Location = new System.Drawing.Point(11, 416);
+            this.TurnLeft.Name = "TurnLeft";
+            this.TurnLeft.Size = new System.Drawing.Size(25, 25);
+            this.TurnLeft.TabIndex = 13;
+            this.TurnLeft.Text = "↶";
+            this.TurnLeft.UseVisualStyleBackColor = true;
+            this.TurnLeft.Click += new System.EventHandler(this.TurnLeft_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(639, 565);
+            this.Controls.Add(this.TurnLeft);
+            this.Controls.Add(this.TurnRight);
+            this.Controls.Add(this.Attack);
             this.Controls.Add(this.Attack3);
             this.Controls.Add(this.Attack2);
             this.Controls.Add(this.Attack1);
@@ -184,6 +230,9 @@
         private System.Windows.Forms.Button Attack1;
         private System.Windows.Forms.Button Attack2;
         private System.Windows.Forms.Button Attack3;
+        private System.Windows.Forms.Button Attack;
+        private System.Windows.Forms.Button TurnRight;
+        private System.Windows.Forms.Button TurnLeft;
     }
 }
 

@@ -8,9 +8,9 @@ namespace KartonKrieger
     public partial class Form1 : Form
     {
         static int BOARD_SIZE = 10;
-        // git
 
         Game Game = new Game();
+        Attack[] DisplayedAttacks = new Attack[3];
 
         public RichTextBox[,] Cells = new RichTextBox[BOARD_SIZE, BOARD_SIZE];
 
@@ -23,10 +23,14 @@ namespace KartonKrieger
         {
             switch (keyData)
             {
+                case Keys.D1: Attack1.PerformClick(); break;
+                case Keys.D2: Attack2.PerformClick(); break;
+                case Keys.D3: Attack3.PerformClick(); break;
                 case Keys.Up: GoNorth.PerformClick(); break;
                 case Keys.Down: GoSouth.PerformClick(); break;
                 case Keys.Left: GoWest.PerformClick(); break;
                 case Keys.Right: GoEast.PerformClick(); break;
+                case Keys.A: Attack.PerformClick(); break;
                 case Keys.E: EndRound.PerformClick(); break;
             }
 
@@ -61,6 +65,7 @@ namespace KartonKrieger
                     rtb.Width = size;
                     rtb.Height = size;
                     rtb.Enabled = false;
+                    rtb.SelectionAlignment = HorizontalAlignment.Center;
 
                     Controls.Add(rtb);
 
@@ -81,20 +86,32 @@ namespace KartonKrieger
             Weapon weapon;
             Attack attack;
 
-            character = AddCharacterToField(x, y, "Player", (CardinalDirection)Game.Randomizer.Next(0, 4));
+            character = AddCharacterToField(x, y, "Player", (CardinalDirection)Game.Randomizer.Next(0, 4), "Friendly");
             weapon = new Weapon();
             weapon.Name = "Paper Clip";
             attack = new Attack();
             attack.Name = "Stab";
             attack.Costs = 1;
+            attack.MinRange = 1;
+            attack.MaxRange = 1;
             attack.Style = AttackStyle.Melee;
-            attack.DamageTypes.Add(new Tuple<DamageType, int, int>(DamageType.Pierce, 1, 1));
+            attack.DamageTypes.Add(DamageType.Pierce, new Tuple<int, int, int>(1, 1, 1));
             weapon.Attacks.Add(attack);
             attack = new Attack();
             attack.Name = "Strike";
             attack.Costs = 1;
+            attack.MinRange = 1;
+            attack.MaxRange = 1;
             attack.Style = AttackStyle.Melee;
-            attack.DamageTypes.Add(new Tuple<DamageType, int, int>(DamageType.Blunt, 2, 3));
+            attack.DamageTypes.Add(DamageType.Blunt, new Tuple<int, int, int>(2, 3, 1));
+            weapon.Attacks.Add(attack);
+            attack = new Attack();
+            attack.Name = "Throw";
+            attack.Costs = 1;
+            attack.MinRange = 2;
+            attack.MaxRange = 5;
+            attack.Style = AttackStyle.Ranged;
+            attack.DamageTypes.Add(DamageType.Pierce, new Tuple<int, int, int>(3, 4, 1));
             weapon.Attacks.Add(attack);
             character.Inventory.Add(weapon);
 
@@ -110,14 +127,16 @@ namespace KartonKrieger
                     continue;
                 }
 
-                character = AddCharacterToField(x, y, $"Enemy{enemyCount}", (CardinalDirection)Game.Randomizer.Next(0, 4));
+                character = AddCharacterToField(x, y, $"Enemy{enemyCount}", (CardinalDirection)Game.Randomizer.Next(0, 4), "Enemy");
                 weapon = new Weapon();
                 weapon.Name = "Paper Clip";
                 attack = new Attack();
                 attack.Name = "Stab";
                 attack.Costs = 1;
+                attack.MinRange = 1;
+                attack.MaxRange = 1;
                 attack.Style = AttackStyle.Melee;
-                attack.DamageTypes.Add(new Tuple<DamageType, int, int>(DamageType.Pierce, 1, 1));
+                attack.DamageTypes.Add(DamageType.Pierce, new Tuple<int, int, int>(1, 1, 1));
                 weapon.Attacks.Add(attack);
                 character.Inventory.Add(weapon);
 
@@ -125,7 +144,7 @@ namespace KartonKrieger
             }
         }
 
-        private Character AddCharacterToField(int x, int y, string name, CardinalDirection facing)
+        private Character AddCharacterToField(int x, int y, string name, CardinalDirection facing, string faction)
         {
             Character character = new Character();
             character.Level = 1;
@@ -133,6 +152,7 @@ namespace KartonKrieger
             character.InitiativeGain = Game.Randomizer.Next(20, 81);
             character.ActionPointsStart = 1;
             character.Facing = facing;
+            character.Faction = faction;
 
             character.AddProperty<Live>();
             CharacterProperty live = character.GetProperty<Live>();
@@ -157,6 +177,8 @@ namespace KartonKrieger
 
             foreach (var attack in attacks)
             {
+                DisplayedAttacks[number] = attack;
+
                 number++;
 
                 Button attackButton = Controls.Find($"Attack{number}", false).OfType<Button>().FirstOrDefault();
@@ -166,16 +188,30 @@ namespace KartonKrieger
                     break;
                 }
 
+                if (Game.ActiveCharacter.SelectedAttack != null && attack == Game.ActiveCharacter.SelectedAttack)
+                {
+                    attackButton.Font = new System.Drawing.Font(attackButton.Font, System.Drawing.FontStyle.Bold);
+                }
+                else
+                {
+                    attackButton.Font = new System.Drawing.Font(attackButton.Font, System.Drawing.FontStyle.Regular);
+                }
+                
                 attackButton.Text = attack.Name;
 
-                foreach (var damageType in attack.DamageTypes)
+                foreach (var damageTypeValues in attack.DamageTypes)
                 {
-                    attackButton.Text += Environment.NewLine + $"{damageType.Item1} ({damageType.Item2}-{damageType.Item3})";
+                    DamageType type = damageTypeValues.Key;
+                    var values = damageTypeValues.Value;
+
+                    attackButton.Text += Environment.NewLine + $"{type} ({values.Item1}-{values.Item1 + values.Item2 + values.Item3})";
                 }
             }
 
             while (number < 3)
             {
+                DisplayedAttacks[number] = null;
+
                 number++;
 
                 Button attackButton = Controls.Find($"Attack{number}", false).OfType<Button>().FirstOrDefault();
@@ -186,6 +222,9 @@ namespace KartonKrieger
 
         private void DrawCells()
         {
+            int activeX = 0;
+            int activeY = 0;
+
             for (int x = 0; x < 10; x++)
             {
                 for (int y = 0; y < 10; y++)
@@ -195,36 +234,47 @@ namespace KartonKrieger
                     Character character = cell.Character;
 
                     if (character == null)
-                    {
+                    {                        
                         rtb.Text = string.Empty;
                         rtb.Font = new System.Drawing.Font(rtb.Font, System.Drawing.FontStyle.Regular);
                     }
                     else
                     {
                         rtb.Text = character.Name;
-                        rtb.Text += Environment.NewLine + $"{character.GetPropertyValue<Live>()} / {character.GetPropertyMax<Live>()}";
-                        rtb.Text += Environment.NewLine + $"{character.Initiative} ({character.InitiativeGain})";
 
-                        switch (cell.Character.Facing)
+                        if (character.Alive)
                         {
-                            case CardinalDirection.North:
-                                rtb.Text += Environment.NewLine + "↑";
-                                break;
-                            case CardinalDirection.South:
-                                rtb.Text += Environment.NewLine + "↓";
-                                break;
-                            case CardinalDirection.East:
-                                rtb.Text += Environment.NewLine + "→";
-                                break;
-                            case CardinalDirection.West:
-                                rtb.Text += Environment.NewLine + "←";
-                                break;
-                            default:
-                                break;
+                            rtb.Text += Environment.NewLine + $"{character.GetPropertyValue<Live>()} / {character.GetPropertyMax<Live>()}";
+                            rtb.Text += Environment.NewLine + $"{character.Initiative} ({character.InitiativeGain})";
+
+                            switch (cell.Character.Facing)
+                            {
+                                case CardinalDirection.North:
+                                    rtb.Text += Environment.NewLine + "↑";
+                                    break;
+                                case CardinalDirection.South:
+                                    rtb.Text += Environment.NewLine + "↓";
+                                    break;
+                                case CardinalDirection.East:
+                                    rtb.Text += Environment.NewLine + "→";
+                                    break;
+                                case CardinalDirection.West:
+                                    rtb.Text += Environment.NewLine + "←";
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            rtb.Text += Environment.NewLine + "✝";
                         }
 
                         if (cell.Character == Game.ActiveCharacter)
                         {
+                            activeX = x;
+                            activeY = y;
+
                             rtb.Font = new System.Drawing.Font(rtb.Font, System.Drawing.FontStyle.Bold);
                         }
                         else
@@ -233,6 +283,21 @@ namespace KartonKrieger
                         }
                     }
                 }
+            }
+
+            if (activeX > 0) DrawMoveCosts(activeX - 1, activeY);
+            if (activeX < BOARD_SIZE - 1) DrawMoveCosts(activeX + 1, activeY);
+            if (activeY > 0) DrawMoveCosts(activeX, activeY - 1);
+            if (activeY < BOARD_SIZE - 1) DrawMoveCosts(activeX, activeY + 1);
+        }
+
+        private void DrawMoveCosts(int x, int y)
+        {
+            RichTextBox rtb = Cells[x, y];
+
+            if (Game.Field.Cells[x, y].Character == null)
+            {
+                rtb.Text = $"{Game.GetMoveCosts(x, y)}";
             }
         }
 
@@ -285,6 +350,113 @@ namespace KartonKrieger
             Game.TryMoveEast();
 
             DrawControls();
+            DrawCells();
+        }
+
+        private void Attack1_Click(object sender, EventArgs e)
+        {
+            if (Game.ActiveCharacter != null)
+            {
+                Game.ActiveCharacter.SelectedAttack = DisplayedAttacks[0];
+            }
+
+            DrawControls();
+        }
+
+        private void Attack2_Click(object sender, EventArgs e)
+        {
+            if (Game.ActiveCharacter != null)
+            {
+                Game.ActiveCharacter.SelectedAttack = DisplayedAttacks[1];
+            }
+
+            DrawControls();
+        }
+
+        private void Attack3_Click(object sender, EventArgs e)
+        {
+            if (Game.ActiveCharacter != null)
+            {
+                Game.ActiveCharacter.SelectedAttack = DisplayedAttacks[2];
+            }
+
+            DrawControls();
+        }
+
+        private void Attack_Click(object sender, EventArgs e)
+        {
+            if (Game.ActiveCharacter?.SelectedAttack == null)
+            {
+                return;
+            }
+
+            if (Game.ActiveCharacter.SelectedAttack.Costs > Game.ActiveCharacter.ActionPoints)
+            {
+                return;
+            }
+
+            Character target = Game.FindTargetForAttack();
+
+            if (target != null)
+            {
+                var live = target.GetProperty<Live>();
+
+                float precision = Game.Randomizer.Next(0, 101);
+
+                foreach (var damageTypeValues in Game.ActiveCharacter.SelectedAttack.DamageTypes)
+                {
+                    DamageType type = damageTypeValues.Key;
+                    var values = damageTypeValues.Value;
+
+                    float damage = values.Item1;
+
+                    damage += values.Item2 * precision / 100.0f;
+
+                    live.CurrentValue -= (float)Math.Round(damage);
+                }
+
+                Game.ActiveCharacter.ActionPoints -= Game.ActiveCharacter.SelectedAttack.Costs;
+            }
+
+            DrawControls();
+            DrawCells();
+        }
+
+        private void TurnLeft_Click(object sender, EventArgs e)
+        {
+            if (Game.ActiveCharacter == null)
+            {
+                return;
+            }
+
+            switch (Game.ActiveCharacter.Facing)
+            {
+                case CardinalDirection.North: Game.ActiveCharacter.Facing = CardinalDirection.West; break;
+                case CardinalDirection.South: Game.ActiveCharacter.Facing = CardinalDirection.East; break;
+                case CardinalDirection.East: Game.ActiveCharacter.Facing = CardinalDirection.North; break;
+                case CardinalDirection.West: Game.ActiveCharacter.Facing = CardinalDirection.South; break;
+                default: break;
+            }
+
+            DrawCells();
+        }
+
+        private void TurnRight_Click(object sender, EventArgs e)
+        {
+            if (Game.ActiveCharacter == null)
+            {
+                return;
+            }
+
+            switch (Game.ActiveCharacter.Facing)
+            {
+                case CardinalDirection.North: Game.ActiveCharacter.Facing = CardinalDirection.East; break;
+                case CardinalDirection.South: Game.ActiveCharacter.Facing = CardinalDirection.West; break;
+                case CardinalDirection.East: Game.ActiveCharacter.Facing = CardinalDirection.South; break;
+                case CardinalDirection.West: Game.ActiveCharacter.Facing = CardinalDirection.North; break;
+                default: break;
+            } 
+
             DrawCells();
         }
     }

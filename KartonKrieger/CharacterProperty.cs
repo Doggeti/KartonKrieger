@@ -2,11 +2,11 @@
 {
     public abstract class CharacterProperty
     {
-        public int CurrentValue;
-        public int BaseMaxValue;
-        public int LevelMultiplier;
+        public float CurrentValue;
+        public float BaseMaxValue;
+        public float LevelMultiplier;
 
-        public int GetMaxValueAtLevel(int level)
+        public float GetMaxValueAtLevel(int level)
         {
             return BaseMaxValue + LevelMultiplier * level;
         }

@@ -25,16 +25,25 @@ namespace KartonKrieger
             {
                 foreach (Character character in Field.Characters)
                 {
-                    character.Initiative += character.InitiativeGain;
+                    if (character.Alive)
+                    {
+                        character.Initiative += character.InitiativeGain;
+                    }
+                    else
+                    {
+                        character.Initiative = 0;
+                    }
                 } 
             }
         }
 
         public Character ChooseActiveCharacter()
         {
-            float max = Field.Characters.Select(c => c.Initiative).Max();
+            var aliveCharacters = Field.Characters.Where(c => c.Alive);
 
-            var maxCharacters = Field.Characters.Where(c => c.Initiative == max);
+            float max = aliveCharacters.Select(c => c.Initiative).Max();
+
+            var maxCharacters = aliveCharacters.Where(c => c.Initiative == max);
 
             return maxCharacters.FirstOrDefault();
         }
@@ -46,6 +55,8 @@ namespace KartonKrieger
 
         public void TryMoveNorth()
         {
+            ActiveCharacter.Facing = CardinalDirection.North;
+
             var coordinates = Field.FindCharacter(ActiveCharacter);
 
             int x = coordinates.Item1;
@@ -81,6 +92,8 @@ namespace KartonKrieger
 
         public void TryMoveSouth()
         {
+            ActiveCharacter.Facing = CardinalDirection.South;
+
             var coordinates = Field.FindCharacter(ActiveCharacter);
 
             int x = coordinates.Item1;
@@ -116,6 +129,8 @@ namespace KartonKrieger
 
         public void TryMoveWest()
         {
+            ActiveCharacter.Facing = CardinalDirection.West;
+
             var coordinates = Field.FindCharacter(ActiveCharacter);
 
             int x = coordinates.Item1;
@@ -151,6 +166,8 @@ namespace KartonKrieger
 
         public void TryMoveEast()
         {
+            ActiveCharacter.Facing = CardinalDirection.East;
+
             var coordinates = Field.FindCharacter(ActiveCharacter);
 
             int x = coordinates.Item1;
@@ -189,6 +206,44 @@ namespace KartonKrieger
             var weapons = ActiveCharacter.Inventory.OfType<Weapon>();
             var attacks = weapons.SelectMany(w => w.Attacks);
             return attacks.ToList();
+        }
+
+        public Character FindTargetForAttack()
+        {
+            if (ActiveCharacter?.SelectedAttack == null)
+            {
+                return null;
+            }
+
+            var start = Field.FindCharacter(ActiveCharacter);
+            BattlefieldCell currentCell = Field.Cells[start.Item1, start.Item2];
+
+            int minRange = ActiveCharacter.SelectedAttack.MinRange;
+            int maxRange = ActiveCharacter.SelectedAttack.MaxRange;
+
+            for (int step = 1; step <= maxRange; step++)
+            {
+                if (currentCell.AdjacentCells[ActiveCharacter.Facing] == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    currentCell = currentCell.AdjacentCells[ActiveCharacter.Facing];
+                }
+
+                if (step < minRange)
+                {
+                    continue;
+                }
+
+                if (currentCell.Character != null && ActiveCharacter.Faction != currentCell.Character.Faction)
+                {
+                    return currentCell.Character;
+                }
+            }
+
+            return null;
         }
     }
 }
