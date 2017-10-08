@@ -17,13 +17,26 @@ namespace KartonKrieger
 
         public void InitCells(int lengthInCells, int widthInCells)
         {
+            Random rnd = new Random();
+
             Cells = new BattlefieldCell[lengthInCells, widthInCells];
 
             for (int l = 0; l < Cells.GetLength(0); l++)
             {
                 for (int w = 0; w < Cells.GetLength(1); w++)
                 {
-                    Cells[l, w] = new BattlefieldCell();
+                    BattlefieldCell cell = new BattlefieldCell();
+
+                    if (rnd.Next(10) < 1)
+                    {
+                        cell.Ground = new CellGround { AggregateState = AggregateState.Liquid };
+                    }
+                    else
+                    {
+                        cell.Ground = new CellGround { AggregateState = AggregateState.Solid };
+                    }
+
+                    Cells[l, w] = cell;
                 }
             }
         }

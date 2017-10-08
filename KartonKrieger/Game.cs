@@ -17,6 +17,12 @@ namespace KartonKrieger
             ActiveCharacter = ChooseActiveCharacter();
 
             ActiveCharacter.ActionPoints = ActiveCharacter.ActionPointsStart;
+
+            foreach (var attack in FindAttacks())
+            {
+                if (attack.Buildup > 0) attack.Buildup--;
+                if (attack.ActiveCooldown > 0) attack.ActiveCooldown--;
+            }
         }
 
         public void UpdateInitiative()
@@ -53,6 +59,18 @@ namespace KartonKrieger
             return 1;
         }
 
+        private bool CanEnterCell(Character character, BattlefieldCell cell)
+        {
+            if (cell.Ground.AggregateState == AggregateState.Solid)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public void TryMoveNorth()
         {
             ActiveCharacter.Facing = CardinalDirection.North;
@@ -70,7 +88,14 @@ namespace KartonKrieger
             int targetX = x;
             int targetY = y - 1;
 
-            if (Field.Cells[targetX, targetY].Character != null)
+            BattlefieldCell targetCell = Field.Cells[targetX, targetY];
+
+            if (targetCell.Character != null)
+            {
+                return;
+            }
+
+            if (!CanEnterCell(ActiveCharacter, targetCell))
             {
                 return;
             }
@@ -84,7 +109,7 @@ namespace KartonKrieger
 
             ActiveCharacter.ActionPoints -= moveCosts;
 
-            Field.Cells[targetX, targetY].Character = ActiveCharacter;
+            targetCell.Character = ActiveCharacter;
             Field.Cells[x, y].Character = null;
 
             ActiveCharacter.Facing = CardinalDirection.North;
@@ -107,7 +132,14 @@ namespace KartonKrieger
             int targetX = x;
             int targetY = y + 1;
 
-            if (Field.Cells[targetX, targetY].Character != null)
+            BattlefieldCell targetCell = Field.Cells[targetX, targetY];
+
+            if (targetCell.Character != null)
+            {
+                return;
+            }
+
+            if (!CanEnterCell(ActiveCharacter, targetCell))
             {
                 return;
             }
@@ -121,7 +153,7 @@ namespace KartonKrieger
 
             ActiveCharacter.ActionPoints -= moveCosts;
 
-            Field.Cells[targetX, targetY].Character = ActiveCharacter;
+            targetCell.Character = ActiveCharacter;
             Field.Cells[x, y].Character = null;
 
             ActiveCharacter.Facing = CardinalDirection.South;
@@ -144,7 +176,14 @@ namespace KartonKrieger
             int targetX = x - 1;
             int targetY = y;
 
-            if (Field.Cells[targetX, targetY].Character != null)
+            BattlefieldCell targetCell = Field.Cells[targetX, targetY];
+
+            if (targetCell.Character != null)
+            {
+                return;
+            }
+
+            if (!CanEnterCell(ActiveCharacter, targetCell))
             {
                 return;
             }
@@ -158,7 +197,7 @@ namespace KartonKrieger
 
             ActiveCharacter.ActionPoints -= moveCosts;
 
-            Field.Cells[x - 1, y].Character = ActiveCharacter;
+            targetCell.Character = ActiveCharacter;
             Field.Cells[x, y].Character = null;
 
             ActiveCharacter.Facing = CardinalDirection.West;
@@ -181,7 +220,14 @@ namespace KartonKrieger
             int targetX = x + 1;
             int targetY = y;
 
-            if (Field.Cells[targetX, targetY].Character != null)
+            BattlefieldCell targetCell = Field.Cells[targetX, targetY];
+
+            if (targetCell.Character != null)
+            {
+                return;
+            }
+
+            if (!CanEnterCell(ActiveCharacter, targetCell))
             {
                 return;
             }
@@ -195,7 +241,7 @@ namespace KartonKrieger
 
             ActiveCharacter.ActionPoints -= moveCosts;
 
-            Field.Cells[x + 1, y].Character = ActiveCharacter;
+            targetCell.Character = ActiveCharacter;
             Field.Cells[x, y].Character = null;
 
             ActiveCharacter.Facing = CardinalDirection.East;

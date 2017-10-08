@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace KartonKrieger
 {
-    class CellGround
+    public class CellGround
     {
-        AggregateState AggregateState;
+        public AggregateState AggregateState;
     }
 }

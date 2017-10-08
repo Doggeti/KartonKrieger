@@ -11,6 +11,10 @@ namespace KartonKrieger
         public int MinRange;
         public int MaxRange;
 
+        public int Buildup;
+        public int Cooldown;
+        public int ActiveCooldown;
+
         public AttackStyle Style;
         public Dictionary<DamageType, Tuple<int, int, int>> DamageTypes = new Dictionary<DamageType, Tuple<int, int, int>>();
     }

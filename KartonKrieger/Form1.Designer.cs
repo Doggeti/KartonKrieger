@@ -59,6 +59,7 @@
             this.EndRound.Name = "EndRound";
             this.EndRound.Size = new System.Drawing.Size(100, 23);
             this.EndRound.TabIndex = 1;
+            this.EndRound.TabStop = false;
             this.EndRound.Text = "Runde beenden";
             this.EndRound.UseVisualStyleBackColor = true;
             this.EndRound.Click += new System.EventHandler(this.EndRound_Click);
@@ -70,6 +71,7 @@
             this.GoNorth.Name = "GoNorth";
             this.GoNorth.Size = new System.Drawing.Size(25, 25);
             this.GoNorth.TabIndex = 2;
+            this.GoNorth.TabStop = false;
             this.GoNorth.Text = "↑";
             this.GoNorth.UseVisualStyleBackColor = true;
             this.GoNorth.Click += new System.EventHandler(this.GoNorth_Click);
@@ -81,6 +83,7 @@
             this.GoWest.Name = "GoWest";
             this.GoWest.Size = new System.Drawing.Size(25, 25);
             this.GoWest.TabIndex = 3;
+            this.GoWest.TabStop = false;
             this.GoWest.Text = "←";
             this.GoWest.UseVisualStyleBackColor = true;
             this.GoWest.Click += new System.EventHandler(this.GoWest_Click);
@@ -92,6 +95,7 @@
             this.GoSouth.Name = "GoSouth";
             this.GoSouth.Size = new System.Drawing.Size(25, 25);
             this.GoSouth.TabIndex = 4;
+            this.GoSouth.TabStop = false;
             this.GoSouth.Text = "↓";
             this.GoSouth.UseVisualStyleBackColor = true;
             this.GoSouth.Click += new System.EventHandler(this.GoSouth_Click);
@@ -103,6 +107,7 @@
             this.GoEast.Name = "GoEast";
             this.GoEast.Size = new System.Drawing.Size(25, 25);
             this.GoEast.TabIndex = 5;
+            this.GoEast.TabStop = false;
             this.GoEast.Text = "→";
             this.GoEast.UseVisualStyleBackColor = true;
             this.GoEast.Click += new System.EventHandler(this.GoEast_Click);
@@ -130,6 +135,7 @@
             this.Attack1.Name = "Attack1";
             this.Attack1.Size = new System.Drawing.Size(101, 48);
             this.Attack1.TabIndex = 8;
+            this.Attack1.TabStop = false;
             this.Attack1.Text = "button1";
             this.Attack1.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.Attack1.UseVisualStyleBackColor = true;
@@ -141,6 +147,7 @@
             this.Attack2.Name = "Attack2";
             this.Attack2.Size = new System.Drawing.Size(101, 48);
             this.Attack2.TabIndex = 9;
+            this.Attack2.TabStop = false;
             this.Attack2.Text = "button1";
             this.Attack2.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.Attack2.UseVisualStyleBackColor = true;
@@ -152,6 +159,7 @@
             this.Attack3.Name = "Attack3";
             this.Attack3.Size = new System.Drawing.Size(102, 48);
             this.Attack3.TabIndex = 10;
+            this.Attack3.TabStop = false;
             this.Attack3.Text = "button1";
             this.Attack3.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.Attack3.UseVisualStyleBackColor = true;
@@ -164,6 +172,7 @@
             this.Attack.Name = "Attack";
             this.Attack.Size = new System.Drawing.Size(103, 48);
             this.Attack.TabIndex = 11;
+            this.Attack.TabStop = false;
             this.Attack.Text = "ATTACK !!!";
             this.Attack.UseVisualStyleBackColor = true;
             this.Attack.Click += new System.EventHandler(this.Attack_Click);
@@ -175,6 +184,7 @@
             this.TurnRight.Name = "TurnRight";
             this.TurnRight.Size = new System.Drawing.Size(25, 25);
             this.TurnRight.TabIndex = 12;
+            this.TurnRight.TabStop = false;
             this.TurnRight.Text = "↷";
             this.TurnRight.UseVisualStyleBackColor = true;
             this.TurnRight.Click += new System.EventHandler(this.TurnRight_Click);
@@ -186,6 +196,7 @@
             this.TurnLeft.Name = "TurnLeft";
             this.TurnLeft.Size = new System.Drawing.Size(25, 25);
             this.TurnLeft.TabIndex = 13;
+            this.TurnLeft.TabStop = false;
             this.TurnLeft.Text = "↶";
             this.TurnLeft.UseVisualStyleBackColor = true;
             this.TurnLeft.Click += new System.EventHandler(this.TurnLeft_Click);

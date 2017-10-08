@@ -1,6 +1,6 @@
 ﻿namespace KartonKrieger
 {
-    enum AggregateState
+    public enum AggregateState
     {
         Solid,
         Liquid
